@@ -32,7 +32,7 @@ ENV     XVID_VERSION    1.3.3
 ENV     FDKAAC_VERSION  0.1.3
 ENV     EXIFTOOL_VERSION 9.75
 # from https://github.com/WPO-Foundation/webpagetest base on pmeenan
-ENV     WPT_VERSION 2.15
+ENV     WPT_VERSION 2.16
 ENV     SRC             /usr/local
 ENV     LD_LIBRARY_PATH ${SRC}/lib
 ENV     PKG_CONFIG_PATH ${SRC}/lib/pkgconfig
@@ -167,9 +167,9 @@ RUN mkdir -p /var/www/html/tmp &&	\
 	chmod 777 /var/www/html/logs 
 
 RUN DIR=$(mktemp -d) && cd ${DIR} && \
-              curl -L -Os https://github.com/WPO-Foundation/webpagetest/archive/WebPagetest-${WPT_VERSION}.tar.gz  && \
-              tar xvf WebPagetest-${WPT_VERSION}.tar.gz && \
-              cd webpagetest-WebPagetest-${WPT_VERSION} && \
+              curl -L -Os https://github.com/WPO-Foundation/webpagetest/archive/WebPageTest-${WPT_VERSION}.tar.gz  && \
+              tar xvf WebPageTest-${WPT_VERSION}.tar.gz && \
+              cd webpagetest-WebPageTest-${WPT_VERSION} && \
               cp -r www/*  /var/www/html/ 
 
 COPY locations.ini /var/www/html/settings/
