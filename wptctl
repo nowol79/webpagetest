@@ -1,0 +1,64 @@
+#!/bin/bash
+
+BASENAME=`basename $0`
+
+set_env() 
+{
+	if [ -z "$WPT_IMAGE_NAME" ]; then 
+		echo "need to set WPT_IMAGE_NAME env value or default WPT_IMAGE_NAME=webpagetest-2.18"
+		export WPT_IMAGE_NAME=webpagetest-2.18
+	fi
+	if [ -z "$WPT_NAME" ]; then
+		echo "need to set WPT_NAME env value or default WPT_IMAGE=wpt"
+		export WPT_NAME=wpt
+	fi
+	if [ -z "$WPT_RESULTS_VOLUME" ]; then
+		echo "need to set WPT_RESULTS_VOLUME env value or default WPT_RESULTS_VOLUME=/tmp/wpt/results"
+		export WPT_RESULTS_VOLUME="/tmp/wpt/results"
+	fi
+}
+
+usage() 
+{
+	cat <<  _EOF_
+	Usage: $BASENAME param param ..
+		param:
+		- build : webpagetest docker image build
+	 		export WPT_IMAGE_NAME=webpagetest-2.18 
+			./wptctl build
+		- start	: webpagetest container start
+			export WPT_NAME=my_wpt 
+			export WPT_RESULTS_VOLUME='/tmp/my/result' 
+			export WPT_IMAGE_NAME=webpagetest-2.18
+			./wptctl start
+		- stop name : webpagetest container stop
+		- restart name: webpagetest container restart 
+_EOF_
+}
+
+set_env 
+
+if [ $# -eq 0 ]; then
+	usage
+else
+	#alias docker='/usr/local/bin/docker'
+	alias docker='/naver/docker/bin/docker'
+	case $1 in 
+	build)
+		docker build -t $WPT_IMAGE_NAME .
+	    ;;
+	start)
+		docker run -d -p 8080:80 -v $WPT_RESULTS_VOLUME:/var/www/html/result --name $WPT_NAME $WPT_IMAGE_NAME
+	    ;;
+	stop)
+		shift
+		docker stop $1
+	    ;;
+	restart)
+		shift
+		docker docker restart $1
+	    ;;
+	*)
+	    ;;
+	esac
+fi

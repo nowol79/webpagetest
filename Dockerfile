@@ -1,13 +1,12 @@
-# DOCKER-VERION:	1.2.0
+# DOCKER-VERION:	1.9.1
 # DESCRIPTION:		Image with private webpagetest (www.webpagetest.org)
-# TO_BUILD:			docker build -rm -t wpt .
-# TO_RUN:			docker run -d -p 8089:80 wpt
+# TO_BUILD:		docker build -rm -t wpt .
+# TO_RUN:		docker run -d --publish 80:80 --volume /tmp/wpt/results:/var/www/html/results webpagetest
 
 FROM centos:centos6
 MAINTAINER Yunkyung Lee <yunkyung@gmail.com>
 
 # for httpd, php 
-#RUN yum update -y
 RUN yum install -y httpd
 RUN yum install -y php php-devel php-pear php-mysql php-mbstring php-gd php-imap php-odbc php-xmlrpc php-xml
 RUN yum install -y gd gd-devel php-gd
@@ -19,11 +18,11 @@ RUN sed -ri 's/post_max_size = 8M/post_max_size = 15M/g' /etc/php.ini
 RUN sed -ri 's/memory_limit = 128M/memory_limit = -1/g' /etc/php.ini
 
 # System Utilities
-## ffmpeg for video recording
+# ffmpeg for video recording
 # based on Julien Rottenberg <julien@rottenberg.info>
 # based on docker image  rottenberg/ffmpeg
 # From https://trac.ffmpeg.org/wiki/CompilationGuide/Centos
-ENV		FFMPEG_VERSION  2.4.1
+ENV	FFMPEG_VERSION  2.8
 ENV     MPLAYER_VERSION 1.1.1
 ENV     YASM_VERSION    1.2.0
 ENV     LAME_VERSION    3.99.5
@@ -32,7 +31,7 @@ ENV     XVID_VERSION    1.3.3
 ENV     FDKAAC_VERSION  0.1.3
 ENV     EXIFTOOL_VERSION 9.75
 # from https://github.com/WPO-Foundation/webpagetest base on pmeenan
-ENV     WPT_VERSION 2.16
+ENV     WPT_VERSION 2.18
 ENV     SRC             /usr/local
 ENV     LD_LIBRARY_PATH ${SRC}/lib
 ENV     PKG_CONFIG_PATH ${SRC}/lib/pkgconfig
@@ -176,6 +175,8 @@ COPY locations.ini /var/www/html/settings/
 COPY connectivity.ini /var/www/html/settings/
 COPY settings.ini /var/www/html/settings/
 
+# test results store volume
+VOLUME ["/var/www/html/results"] 
+
 EXPOSE 80
-ENTRYPOINT ["/usr/sbin/httpd"]
-CMD ["-D", "FOREGROUND"]
+CMD ["/usr/sbin/httpd", "-k", "start", "-D", "FOREGROUND"]
