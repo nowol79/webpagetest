@@ -48,7 +48,7 @@ else
 		docker build -t $WPT_IMAGE_NAME .
 	    ;;
 	start)
-		docker run -d -p 8080:80 -v $WPT_RESULTS_VOLUME:/var/www/html/result --name $WPT_NAME $WPT_IMAGE_NAME
+		docker run -d -p 8080:80 -v $WPT_RESULTS_VOLUME:/var/www/html/results --name $WPT_NAME $WPT_IMAGE_NAME
 	    ;;
 	stop)
 		shift
