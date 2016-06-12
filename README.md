@@ -19,6 +19,10 @@ After running OK!, You can check the main page & status page through a browser!!
   
   ![wpt_install](https://cloud.githubusercontent.com/assets/9585881/15988053/5f3d18d8-307d-11e6-981f-9a7074f4e3b7.PNG)
   
-  
-Test Location has not yet been connected.
+
+Test Location Setting
+=====
+After webpagetest running, Test Location has not yet been connected.
+Let's set the PC/Mobile location through location.ini
+
 
