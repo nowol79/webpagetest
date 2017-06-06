@@ -31,7 +31,7 @@ ENV     XVID_VERSION    1.3.3
 ENV     FDKAAC_VERSION  0.1.3
 ENV     EXIFTOOL_VERSION 9.75
 # from https://github.com/WPO-Foundation/webpagetest base on pmeenan
-ENV     WPT_VERSION 2.18
+ENV     WPT_VERSION 3.0
 ENV     SRC             /usr/local
 ENV     LD_LIBRARY_PATH ${SRC}/lib
 ENV     PKG_CONFIG_PATH ${SRC}/lib/pkgconfig
